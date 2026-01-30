@@ -25,3 +25,6 @@ main.h
 
 sink_callback.h
   1. It's dangerious to call another logger in the sink_it_() function. It may lead to dead-lock or infinity recursion.I'm not sure what the purpose is of this class. But if we insist to print "re-enter logger" to the default logger, we should put the messages into a queue and print them to the default logger in another thread. It needs to be thread safe. I create a mutex to block it before writing/reading to the queue. And I create a condition_variable to make sure it prints the top of the queue only when it's not empty.
+
+Follow up:
+  I think the most risk issue is the one that used invalid pointer, like the issue in string_uaf.h and shutdown.h. Because they are not only crash the program and may also expose the private data and put the whole syste in dangerious.
