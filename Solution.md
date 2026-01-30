@@ -17,3 +17,8 @@ shutdown.h
 timebase.h
   1. t1 and t2 were not the same clock, t1 is steady_clock and t2 was system_lock, I change t2 to steady_clock to make them the same.
   2. It may loose accurcy if we convert the steady_clock to count first then do the subtraction. I make them do the subtraction first then converting them to the count.
+
+main.h
+  1. The pool size of the logger, 8192, maybe not enough. It's going to lose some old logs if it's full.
+  2. level5.print() will not be seen, because it prints debug log.
+  3. The shutdown thread will set the stop to false after 100ms. There will be no other logs except "heartbeat" and "level 5 logs" after 100ms, no matter how much we set to --seconds.

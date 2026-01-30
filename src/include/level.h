@@ -15,7 +15,7 @@ public:
   ~Level5() {};
 
   void print() {
-    spdlog::debug("{}", s);
+    spdlog::info("{}", s);
   }
 
 private:
