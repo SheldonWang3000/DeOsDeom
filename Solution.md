@@ -9,3 +9,7 @@ level.h
 string_uaf.h
   1. It only passes the pointer of the tmp string to the spdlog. But the memory of that address might be freed before spdlog print it. I use the owning type std::string instead of the pointer of the string to print. It may takes some time rather than format the string later, but it's safer.
   2. std::rand() may not thread safe.
+
+shutdown.h
+  1. It is dangerious to cache the pointer of the logger, it may change after caching it. I use the owning variable instead of the pointer to make it safer.
+  2. It is not appropriate to shutdown the logger in this class. We should just set the stop to true, which could gentally shutdown other thread and make them take care of the shutting down. Not just call the shutdown, it will lose some logs in other threads. 

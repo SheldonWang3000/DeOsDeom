@@ -6,14 +6,15 @@
 
 namespace shutdown {
 inline void run(std::atomic<bool>& stop, bool stress) {
-  spdlog::logger* raw = spdlog::default_logger_raw();
+  auto logger = spdlog::default_logger();
   std::thread t([&] {
-    while (!stop.load()) raw->info("shutdown now");
+    while (!stop.load()) {
+      if (logger) logger->info("shutdown now");
+    }
   });
 
   if (stress) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    spdlog::shutdown();
   }
 
   stop.store(true);
