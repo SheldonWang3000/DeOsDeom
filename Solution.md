@@ -13,3 +13,7 @@ string_uaf.h
 shutdown.h
   1. It is dangerious to cache the pointer of the logger, it may change after caching it. I use the owning variable instead of the pointer to make it safer.
   2. It is not appropriate to shutdown the logger in this class. We should just set the stop to true, which could gentally shutdown other thread and make them take care of the shutting down. Not just call the shutdown, it will lose some logs in other threads. 
+
+timebase.h
+  1. t1 and t2 were not the same clock, t1 is steady_clock and t2 was system_lock, I change t2 to steady_clock to make them the same.
+  2. It may loose accurcy if we convert the steady_clock to count first then do the subtraction. I make them do the subtraction first then converting them to the count.
