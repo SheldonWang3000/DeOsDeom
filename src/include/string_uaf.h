@@ -10,17 +10,13 @@
 namespace string_uaf {
 
 struct DeferredLog {
-  const char* ptr;
-  size_t len;
-
+  std::string msg;
   void set() {
-    std::string tmp = "uaf:" + std::to_string(std::rand());
-    ptr = tmp.data();
-    len = tmp.size();
+    msg = "uaf:" + std::to_string(std::rand());
   }
 
   void emit() const {
-    spdlog::info("deferred={}", std::string_view(ptr, len));
+    spdlog::info("deferred={}", msg);
   }
 };
 

@@ -5,3 +5,7 @@ level.h
   4. The two threads are running unrelatively, so it's not going to show logs like "even" -> "odd" -> "even". Not sure if that's the purpose of this class or not. If that's the purpose, we should an even number like 1000000006 not 1000000006. Otherwise, 1000000006 prints "even" and the next one will also print "even".
   5. We should never delete the pointer of a private variable of the class in the deconstrution function. It's going to be destoryed automatically.
   6. We should alwasy use spdlog::info("{}", msg) instead of printing the msg directly. Otherwise, the "{}" in msg will be a problem.
+
+string_uaf.h
+  1. It only passes the pointer of the tmp string to the spdlog. But the memory of that address might be freed before spdlog print it. I use the owning type std::string instead of the pointer of the string to print. It may takes some time rather than format the string later, but it's safer.
+  2. std::rand() may not thread safe.
