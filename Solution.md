@@ -22,3 +22,6 @@ main.h
   1. The pool size of the logger, 8192, maybe not enough. It's going to lose some old logs if it's full.
   2. level5.print() will not be seen, because it prints debug log.
   3. The shutdown thread will set the stop to false after 100ms. There will be no other logs except "heartbeat" and "level 5 logs" after 100ms, no matter how much we set to --seconds.
+
+sink_callback.h
+  1. It's dangerious to call another logger in the sink_it_() function. It may lead to dead-lock or infinity recursion.I'm not sure what the purpose is of this class. But if we insist to print "re-enter logger" to the default logger, we should put the messages into a queue and print them to the default logger in another thread. It needs to be thread safe. I create a mutex to block it before writing/reading to the queue. And I create a condition_variable to make sure it prints the top of the queue only when it's not empty.
